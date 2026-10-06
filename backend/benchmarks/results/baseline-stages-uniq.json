@@ -1,0 +1,494 @@
+{
+  "mode": "stages",
+  "page_size": 100,
+  "batch_size": 500,
+  "api_latency_ms": 0.0,
+  "baseline": true,
+  "rows": [
+    {
+      "size": 100,
+      "acquisition_s": 1.902,
+      "analysis_s": 0.186,
+      "aggregation_s": 0.0022,
+      "job_status_poll_s": 0.0001,
+      "total_s": 2.09,
+      "first_page_persisted_s": 1.901,
+      "first_batch_saved_s": 0.186,
+      "first_insight_sequential_s": 2.088,
+      "comments_per_second": 536.4,
+      "end_to_end_per_second": 47.8,
+      "api_pages": 1,
+      "api_calls": 2,
+      "batch_size": 500,
+      "nlp_inference_s": 0.168,
+      "vader_s": 0.077,
+      "emotion_s": 0.092,
+      "langdetect_s": 1.855,
+      "db_write_s": 0.014,
+      "counts": {
+        "processed": 92,
+        "failed": 0,
+        "skipped": 8,
+        "analyzed": 92
+      },
+      "stages": {
+        "db.read.get_active_video": {
+          "calls": 3,
+          "seconds": 0.00243
+        },
+        "db.read.get_average_sentiment_confidence": {
+          "calls": 1,
+          "seconds": 0.000235
+        },
+        "db.read.get_emotion_counts": {
+          "calls": 1,
+          "seconds": 0.000387
+        },
+        "db.read.get_intensity_counts": {
+          "calls": 1,
+          "seconds": 0.000282
+        },
+        "db.read.get_latest_job": {
+          "calls": 2,
+          "seconds": 0.000184
+        },
+        "db.read.get_sentiment_counts": {
+          "calls": 1,
+          "seconds": 0.000184
+        },
+        "db.read.get_status_counts": {
+          "calls": 2,
+          "seconds": 0.000215
+        },
+        "db.write.claim_for_processing": {
+          "calls": 1,
+          "seconds": 0.003932
+        },
+        "db.write.record_ingestion_run": {
+          "calls": 1,
+          "seconds": 0.000123
+        },
+        "db.write.save_sentiment_results": {
+          "calls": 1,
+          "seconds": 0.00556
+        },
+        "db.write.upsert_comments": {
+          "calls": 1,
+          "seconds": 0.00358
+        },
+        "db.write.upsert_video": {
+          "calls": 2,
+          "seconds": 0.000486
+        },
+        "ingest.langdetect": {
+          "calls": 100,
+          "seconds": 1.85545
+        },
+        "ingest.normalize": {
+          "calls": 100,
+          "seconds": 0.007957
+        },
+        "ingest.validate": {
+          "calls": 1,
+          "seconds": 0.000909
+        },
+        "nlp.emotion": {
+          "calls": 92,
+          "seconds": 0.091618
+        },
+        "nlp.vader": {
+          "calls": 92,
+          "seconds": 0.076792
+        }
+      }
+    },
+    {
+      "size": 500,
+      "acquisition_s": 5.091,
+      "analysis_s": 0.641,
+      "aggregation_s": 0.0033,
+      "job_status_poll_s": 0.0001,
+      "total_s": 5.735,
+      "first_page_persisted_s": 0.963,
+      "first_batch_saved_s": 0.64,
+      "first_insight_sequential_s": 5.731,
+      "comments_per_second": 779.9,
+      "end_to_end_per_second": 87.2,
+      "api_pages": 5,
+      "api_calls": 6,
+      "batch_size": 500,
+      "nlp_inference_s": 0.562,
+      "vader_s": 0.217,
+      "emotion_s": 0.345,
+      "langdetect_s": 4.93,
+      "db_write_s": 0.077,
+      "counts": {
+        "processed": 460,
+        "failed": 0,
+        "skipped": 40,
+        "analyzed": 460
+      },
+      "stages": {
+        "db.read.get_active_video": {
+          "calls": 3,
+          "seconds": 0.003008
+        },
+        "db.read.get_average_sentiment_confidence": {
+          "calls": 1,
+          "seconds": 0.000401
+        },
+        "db.read.get_emotion_counts": {
+          "calls": 1,
+          "seconds": 0.000758
+        },
+        "db.read.get_intensity_counts": {
+          "calls": 1,
+          "seconds": 0.000646
+        },
+        "db.read.get_latest_job": {
+          "calls": 2,
+          "seconds": 0.00021
+        },
+        "db.read.get_sentiment_counts": {
+          "calls": 1,
+          "seconds": 0.000263
+        },
+        "db.read.get_status_counts": {
+          "calls": 2,
+          "seconds": 0.000714
+        },
+        "db.write.claim_for_processing": {
+          "calls": 1,
+          "seconds": 0.016984
+        },
+        "db.write.record_ingestion_run": {
+          "calls": 1,
+          "seconds": 0.000163
+        },
+        "db.write.save_sentiment_results": {
+          "calls": 1,
+          "seconds": 0.031358
+        },
+        "db.write.upsert_comments": {
+          "calls": 5,
+          "seconds": 0.02685
+        },
+        "db.write.upsert_video": {
+          "calls": 6,
+          "seconds": 0.001344
+        },
+        "ingest.langdetect": {
+          "calls": 500,
+          "seconds": 4.930485
+        },
+        "ingest.normalize": {
+          "calls": 500,
+          "seconds": 0.040477
+        },
+        "ingest.validate": {
+          "calls": 5,
+          "seconds": 0.004755
+        },
+        "nlp.emotion": {
+          "calls": 460,
+          "seconds": 0.344966
+        },
+        "nlp.vader": {
+          "calls": 460,
+          "seconds": 0.217448
+        }
+      }
+    },
+    {
+      "size": 1000,
+      "acquisition_s": 11.072,
+      "analysis_s": 1.189,
+      "aggregation_s": 0.0048,
+      "job_status_poll_s": 0.0,
+      "total_s": 12.265,
+      "first_page_persisted_s": 1.082,
+      "first_batch_saved_s": 0.577,
+      "first_insight_sequential_s": 11.649,
+      "comments_per_second": 841.2,
+      "end_to_end_per_second": 81.5,
+      "api_pages": 10,
+      "api_calls": 11,
+      "batch_size": 500,
+      "nlp_inference_s": 1.051,
+      "vader_s": 0.403,
+      "emotion_s": 0.648,
+      "langdetect_s": 10.784,
+      "db_write_s": 0.124,
+      "counts": {
+        "processed": 909,
+        "failed": 0,
+        "skipped": 91,
+        "analyzed": 909
+      },
+      "stages": {
+        "db.read.get_active_video": {
+          "calls": 4,
+          "seconds": 0.003251
+        },
+        "db.read.get_average_sentiment_confidence": {
+          "calls": 1,
+          "seconds": 0.000711
+        },
+        "db.read.get_emotion_counts": {
+          "calls": 1,
+          "seconds": 0.001588
+        },
+        "db.read.get_intensity_counts": {
+          "calls": 1,
+          "seconds": 0.001164
+        },
+        "db.read.get_latest_job": {
+          "calls": 2,
+          "seconds": 0.000117
+        },
+        "db.read.get_sentiment_counts": {
+          "calls": 1,
+          "seconds": 0.00046
+        },
+        "db.read.get_status_counts": {
+          "calls": 2,
+          "seconds": 0.001138
+        },
+        "db.write.claim_for_processing": {
+          "calls": 2,
+          "seconds": 0.033445
+        },
+        "db.write.record_ingestion_run": {
+          "calls": 1,
+          "seconds": 0.000239
+        },
+        "db.write.save_sentiment_results": {
+          "calls": 2,
+          "seconds": 0.041491
+        },
+        "db.write.upsert_comments": {
+          "calls": 10,
+          "seconds": 0.046876
+        },
+        "db.write.upsert_video": {
+          "calls": 11,
+          "seconds": 0.001908
+        },
+        "ingest.langdetect": {
+          "calls": 1000,
+          "seconds": 10.784071
+        },
+        "ingest.normalize": {
+          "calls": 1000,
+          "seconds": 0.084779
+        },
+        "ingest.validate": {
+          "calls": 10,
+          "seconds": 0.007938
+        },
+        "nlp.emotion": {
+          "calls": 909,
+          "seconds": 0.648179
+        },
+        "nlp.vader": {
+          "calls": 909,
+          "seconds": 0.402728
+        }
+      }
+    },
+    {
+      "size": 2500,
+      "acquisition_s": 28.336,
+      "analysis_s": 3.63,
+      "aggregation_s": 0.0204,
+      "job_status_poll_s": 0.0001,
+      "total_s": 31.986,
+      "first_page_persisted_s": 0.922,
+      "first_batch_saved_s": 0.848,
+      "first_insight_sequential_s": 29.184,
+      "comments_per_second": 688.7,
+      "end_to_end_per_second": 78.2,
+      "api_pages": 25,
+      "api_calls": 26,
+      "batch_size": 500,
+      "nlp_inference_s": 2.982,
+      "vader_s": 1.214,
+      "emotion_s": 1.768,
+      "langdetect_s": 27.573,
+      "db_write_s": 0.592,
+      "counts": {
+        "processed": 2264,
+        "failed": 0,
+        "skipped": 236,
+        "analyzed": 2264
+      },
+      "stages": {
+        "db.read.get_active_video": {
+          "calls": 7,
+          "seconds": 0.002193
+        },
+        "db.read.get_average_sentiment_confidence": {
+          "calls": 1,
+          "seconds": 0.003518
+        },
+        "db.read.get_emotion_counts": {
+          "calls": 1,
+          "seconds": 0.005769
+        },
+        "db.read.get_intensity_counts": {
+          "calls": 1,
+          "seconds": 0.006226
+        },
+        "db.read.get_latest_job": {
+          "calls": 2,
+          "seconds": 0.000215
+        },
+        "db.read.get_sentiment_counts": {
+          "calls": 1,
+          "seconds": 0.001887
+        },
+        "db.read.get_status_counts": {
+          "calls": 2,
+          "seconds": 0.003162
+        },
+        "db.write.claim_for_processing": {
+          "calls": 5,
+          "seconds": 0.109844
+        },
+        "db.write.record_ingestion_run": {
+          "calls": 1,
+          "seconds": 0.000307
+        },
+        "db.write.save_sentiment_results": {
+          "calls": 5,
+          "seconds": 0.347382
+        },
+        "db.write.upsert_comments": {
+          "calls": 25,
+          "seconds": 0.130684
+        },
+        "db.write.upsert_video": {
+          "calls": 26,
+          "seconds": 0.004023
+        },
+        "ingest.langdetect": {
+          "calls": 2500,
+          "seconds": 27.573103
+        },
+        "ingest.normalize": {
+          "calls": 2500,
+          "seconds": 0.222018
+        },
+        "ingest.validate": {
+          "calls": 25,
+          "seconds": 0.020689
+        },
+        "nlp.emotion": {
+          "calls": 2264,
+          "seconds": 1.768332
+        },
+        "nlp.vader": {
+          "calls": 2264,
+          "seconds": 1.213873
+        }
+      }
+    },
+    {
+      "size": 5000,
+      "acquisition_s": 66.496,
+      "analysis_s": 7.805,
+      "aggregation_s": 0.0365,
+      "job_status_poll_s": 0.0001,
+      "total_s": 74.338,
+      "first_page_persisted_s": 1.299,
+      "first_batch_saved_s": 0.836,
+      "first_insight_sequential_s": 67.333,
+      "comments_per_second": 640.6,
+      "end_to_end_per_second": 67.3,
+      "api_pages": 50,
+      "api_calls": 51,
+      "batch_size": 500,
+      "nlp_inference_s": 6.66,
+      "vader_s": 2.803,
+      "emotion_s": 3.857,
+      "langdetect_s": 64.745,
+      "db_write_s": 1.049,
+      "counts": {
+        "processed": 4584,
+        "failed": 0,
+        "skipped": 416,
+        "analyzed": 4584
+      },
+      "stages": {
+        "db.read.get_active_video": {
+          "calls": 12,
+          "seconds": 0.003053
+        },
+        "db.read.get_average_sentiment_confidence": {
+          "calls": 1,
+          "seconds": 0.006613
+        },
+        "db.read.get_emotion_counts": {
+          "calls": 1,
+          "seconds": 0.011711
+        },
+        "db.read.get_intensity_counts": {
+          "calls": 1,
+          "seconds": 0.012235
+        },
+        "db.read.get_latest_job": {
+          "calls": 2,
+          "seconds": 0.000222
+        },
+        "db.read.get_sentiment_counts": {
+          "calls": 1,
+          "seconds": 0.002293
+        },
+        "db.read.get_status_counts": {
+          "calls": 2,
+          "seconds": 0.006226
+        },
+        "db.write.claim_for_processing": {
+          "calls": 10,
+          "seconds": 0.254013
+        },
+        "db.write.record_ingestion_run": {
+          "calls": 1,
+          "seconds": 0.000252
+        },
+        "db.write.save_sentiment_results": {
+          "calls": 10,
+          "seconds": 0.460573
+        },
+        "db.write.upsert_comments": {
+          "calls": 50,
+          "seconds": 0.324958
+        },
+        "db.write.upsert_video": {
+          "calls": 51,
+          "seconds": 0.009211
+        },
+        "ingest.langdetect": {
+          "calls": 5000,
+          "seconds": 64.745006
+        },
+        "ingest.normalize": {
+          "calls": 5000,
+          "seconds": 0.51681
+        },
+        "ingest.validate": {
+          "calls": 50,
+          "seconds": 0.052387
+        },
+        "nlp.emotion": {
+          "calls": 4584,
+          "seconds": 3.856792
+        },
+        "nlp.vader": {
+          "calls": 4584,
+          "seconds": 2.802842
+        }
+      }
+    }
+  ]
+}

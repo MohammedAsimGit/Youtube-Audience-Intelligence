@@ -1,0 +1,73 @@
+{
+  "benchmark": "sprint6-topics",
+  "runs_per_scale": 5,
+  "method": "min of timed runs (perf_counter)",
+  "embedding": "not used (pure-lexical discovery)",
+  "results": [
+    {
+      "scale": 100,
+      "extract_ms": 2.93,
+      "engine_ms": 4.97,
+      "cluster_ms": 2.04,
+      "aggregate_ms": 0.58,
+      "db_load_ms": 7.03,
+      "service_total_ms": 10.22,
+      "memo_hit_us": 191.7,
+      "memory_peak_kb": 168.0,
+      "topics": 5,
+      "embedding_ms": 0.0
+    },
+    {
+      "scale": 500,
+      "extract_ms": 14.6,
+      "engine_ms": 20.31,
+      "cluster_ms": 5.71,
+      "aggregate_ms": 0.59,
+      "db_load_ms": 29.01,
+      "service_total_ms": 52.67,
+      "memo_hit_us": 364.5,
+      "memory_peak_kb": 593.4,
+      "topics": 5,
+      "embedding_ms": 0.0
+    },
+    {
+      "scale": 1000,
+      "extract_ms": 31.85,
+      "engine_ms": 39.14,
+      "cluster_ms": 7.29,
+      "aggregate_ms": 0.59,
+      "db_load_ms": 62.77,
+      "service_total_ms": 108.53,
+      "memo_hit_us": 551.5,
+      "memory_peak_kb": 946.9,
+      "topics": 5,
+      "embedding_ms": 0.0
+    },
+    {
+      "scale": 2500,
+      "extract_ms": 87.32,
+      "engine_ms": 126.61,
+      "cluster_ms": 39.29,
+      "aggregate_ms": 1.19,
+      "db_load_ms": 159.24,
+      "service_total_ms": 249.77,
+      "memo_hit_us": 2912.1,
+      "memory_peak_kb": 2446.8,
+      "topics": 5,
+      "embedding_ms": 0.0
+    },
+    {
+      "scale": 5000,
+      "extract_ms": 183.93,
+      "engine_ms": 190.49,
+      "cluster_ms": 6.56,
+      "aggregate_ms": 0.93,
+      "db_load_ms": 404.95,
+      "service_total_ms": 691.84,
+      "memo_hit_us": 2563.5,
+      "memory_peak_kb": 4029.1,
+      "topics": 5,
+      "embedding_ms": 0.0
+    }
+  ]
+}

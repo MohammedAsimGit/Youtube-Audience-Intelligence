@@ -1,0 +1,24 @@
+{
+  "mode": "memory",
+  "page_size": 100,
+  "batch_size": 500,
+  "api_latency_ms": 0.0,
+  "baseline": true,
+  "rows": [
+    {
+      "size": 500,
+      "peak_acquire_mib": 57.42,
+      "peak_analyze_mib": 59.69
+    },
+    {
+      "size": 1000,
+      "peak_acquire_mib": 2.28,
+      "peak_analyze_mib": 1.62
+    },
+    {
+      "size": 2500,
+      "peak_acquire_mib": 4.35,
+      "peak_analyze_mib": 3.58
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "benchmark": "sprint7-insight",
+  "runs_per_scale": 5,
+  "method": "min of timed runs (perf_counter)",
+  "llm": "deterministic default provider (no network); provider HTTP time is configuration-dependent and not measured",
+  "results": [
+    {
+      "scale": 100,
+      "evidence_ms": 0.02,
+      "candidates_ms": 0.009,
+      "generate_ms": 0.23,
+      "validate_ms": 0.157,
+      "service_total_ms": 7.23,
+      "memo_hit_us": 116.3,
+      "prompt_bytes": 407,
+      "memory_peak_kb": 185.8,
+      "cards": 6,
+      "llm_prompt_chars": 407
+    },
+    {
+      "scale": 500,
+      "evidence_ms": 0.02,
+      "candidates_ms": 0.009,
+      "generate_ms": 0.23,
+      "validate_ms": 0.162,
+      "service_total_ms": 23.51,
+      "memo_hit_us": 242.8,
+      "prompt_bytes": 409,
+      "memory_peak_kb": 611.0,
+      "cards": 6,
+      "llm_prompt_chars": 409
+    },
+    {
+      "scale": 1000,
+      "evidence_ms": 0.02,
+      "candidates_ms": 0.008,
+      "generate_ms": 0.22,
+      "validate_ms": 0.154,
+      "service_total_ms": 33.16,
+      "memo_hit_us": 410.2,
+      "prompt_bytes": 411,
+      "memory_peak_kb": 963.3,
+      "cards": 6,
+      "llm_prompt_chars": 411
+    },
+    {
+      "scale": 2500,
+      "evidence_ms": 0.02,
+      "candidates_ms": 0.008,
+      "generate_ms": 0.22,
+      "validate_ms": 0.154,
+      "service_total_ms": 98.37,
+      "memo_hit_us": 852.7,
+      "prompt_bytes": 411,
+      "memory_peak_kb": 2460.3,
+      "cards": 6,
+      "llm_prompt_chars": 411
+    },
+    {
+      "scale": 5000,
+      "evidence_ms": 0.02,
+      "candidates_ms": 0.008,
+      "generate_ms": 0.22,
+      "validate_ms": 0.155,
+      "service_total_ms": 253.41,
+      "memo_hit_us": 1609.4,
+      "prompt_bytes": 413,
+      "memory_peak_kb": 4044.1,
+      "cards": 6,
+      "llm_prompt_chars": 413
+    }
+  ]
+}

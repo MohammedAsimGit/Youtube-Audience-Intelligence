@@ -1,0 +1,33 @@
+{
+  "mode": "memory",
+  "page_size": 100,
+  "batch_size": 500,
+  "api_latency_ms": 0.0,
+  "rows": [
+    {
+      "size": 100,
+      "peak_acquire_mib": 56.71,
+      "peak_analyze_mib": 58.93
+    },
+    {
+      "size": 500,
+      "peak_acquire_mib": 1.19,
+      "peak_analyze_mib": 1.12
+    },
+    {
+      "size": 1000,
+      "peak_acquire_mib": 1.92,
+      "peak_analyze_mib": 1.41
+    },
+    {
+      "size": 2500,
+      "peak_acquire_mib": 3.79,
+      "peak_analyze_mib": 3.2
+    },
+    {
+      "size": 5000,
+      "peak_acquire_mib": 7.25,
+      "peak_analyze_mib": 1.76
+    }
+  ]
+}

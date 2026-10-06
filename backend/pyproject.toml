@@ -1,0 +1,10 @@
+[project]
+name = "sentiment-ai-backend"
+version = "0.5.0"
+description = "YouTube data acquisition, ingestion, dataset store & sentiment analysis (Sprint 4)"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"

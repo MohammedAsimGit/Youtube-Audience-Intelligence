@@ -1,0 +1,64 @@
+{
+  "benchmark": "sprint8-realtime",
+  "generated_at": "2026-10-02T11:00:33.166276+00:00",
+  "runs": 20,
+  "burst_comments": 50,
+  "notes": "steady_probe = acquire_incremental over a fully-stored newest page (boundary stop): 1 commentThreads.list unit per poll, flat vs dataset scale. tick = full monitor cycle incl. VADER/NRC over the 50 new rows.",
+  "results": [
+    {
+      "scale": 100,
+      "steady_probe_ms": 1.95,
+      "steady_api_calls_per_poll": 1,
+      "status_build_ms": 0.118,
+      "burst_insert_ms": 405.49,
+      "tick_ms": 51.981,
+      "tick_second_ms": 27.162,
+      "tick_memory_kb": 382.3,
+      "analyzed_after": 200
+    },
+    {
+      "scale": 500,
+      "steady_probe_ms": 2.682,
+      "steady_api_calls_per_poll": 1,
+      "status_build_ms": 0.475,
+      "burst_insert_ms": 8.998,
+      "tick_ms": 15.041,
+      "tick_second_ms": 47.9,
+      "tick_memory_kb": 381.3,
+      "analyzed_after": 600
+    },
+    {
+      "scale": 1000,
+      "steady_probe_ms": 2.722,
+      "steady_api_calls_per_poll": 1,
+      "status_build_ms": 0.628,
+      "burst_insert_ms": 5.377,
+      "tick_ms": 8.971,
+      "tick_second_ms": 27.73,
+      "tick_memory_kb": 381.4,
+      "analyzed_after": 1100
+    },
+    {
+      "scale": 2500,
+      "steady_probe_ms": 4.129,
+      "steady_api_calls_per_poll": 1,
+      "status_build_ms": 1.555,
+      "burst_insert_ms": 7.44,
+      "tick_ms": 10.893,
+      "tick_second_ms": 29.544,
+      "tick_memory_kb": 381.4,
+      "analyzed_after": 2600
+    },
+    {
+      "scale": 5000,
+      "steady_probe_ms": 6.493,
+      "steady_api_calls_per_poll": 1,
+      "status_build_ms": 3.227,
+      "burst_insert_ms": 14.051,
+      "tick_ms": 14.696,
+      "tick_second_ms": 34.2,
+      "tick_memory_kb": 381.3,
+      "analyzed_after": 5100
+    }
+  ]
+}

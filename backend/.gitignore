@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+
+# Local dataset store (never commit user data)
+data/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+__pycache__/
+.pytest_cache/

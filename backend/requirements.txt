@@ -1,0 +1,27 @@
+# Backend runtime dependencies (Sprint 3 + Sprint 4)
+fastapi>=0.115
+uvicorn[standard]>=0.30
+httpx>=0.27
+pydantic>=2.9
+pydantic-settings>=2.6
+python-dotenv>=1.0
+# Language metadata for stored comments (deterministic seed, confidence
+# threshold; see docs/architecture/data-pipeline.md). Pure Python.
+langdetect>=1.0.9
+# Sprint 4 sentiment engine: VADER (Hutto & Gilbert, 2014) - a rule-based,
+# lexicon scoring model. Chosen because it is pure Python, CPU-only, fully
+# deterministic (no model weights to download, no GPU, no network), emoji- and
+# punctuation-aware, and produces a documented compound score in [-1, 1].
+# See docs/architecture/sentiment-analysis.md for the rationale, supported
+# language policy, and score semantics.
+vaderSentiment>=1.0.0
+# Sprint 5 emotion engine: NRC Emotion Lexicon lookup (Mohammad & Turney,
+# 2013) through nrclex4.x. We drive it via load_token_list() with the
+# pipeline's own tokenizer, so the bundled JSON lexicon is all that is used:
+# pure Python, CPU-only, deterministic, no model weights, no runtime
+# downloads (TextBlob/NLTK come as package deps but their corpora are never
+# fetched). See docs/architecture/audience-intelligence.md.
+nrclex>=4.1
+
+# Test dependencies
+pytest>=8.0

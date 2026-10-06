@@ -1,0 +1,51 @@
+{
+  "mode": "micro",
+  "page_size": 100,
+  "batch_size": 500,
+  "api_latency_ms": 0.0,
+  "baseline": false,
+  "per_comment": {
+    "vader_us": 466.2,
+    "emotion_us": 91.6,
+    "langdetect_us": 8207.8,
+    "nrcler_ctor_us": 555.2,
+    "n": 5000
+  },
+  "batch_sweep": [
+    {
+      "batch_size": 32,
+      "total_s": 4.811,
+      "first_batch_s": 0.03,
+      "comments_per_second": 1039.3,
+      "processed": 5000
+    },
+    {
+      "batch_size": 64,
+      "total_s": 4.018,
+      "first_batch_s": 0.056,
+      "comments_per_second": 1244.5,
+      "processed": 5000
+    },
+    {
+      "batch_size": 128,
+      "total_s": 3.895,
+      "first_batch_s": 0.088,
+      "comments_per_second": 1283.7,
+      "processed": 5000
+    },
+    {
+      "batch_size": 256,
+      "total_s": 3.923,
+      "first_batch_s": 0.17,
+      "comments_per_second": 1274.6,
+      "processed": 5000
+    },
+    {
+      "batch_size": 512,
+      "total_s": 4.08,
+      "first_batch_s": 0.429,
+      "comments_per_second": 1225.5,
+      "processed": 5000
+    }
+  ]
+}
