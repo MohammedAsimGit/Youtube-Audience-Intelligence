@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AI Overlay</string>
+    <string name="overlay_notification_channel">YouTube AI Intelligence</string>
+    <string name="overlay_notification_title">YouTube AI Intelligence</string>
+    <string name="overlay_notification_text">Overlay active</string>
+    <string name="overlay_badge_label">AI</string>
+</resources>
