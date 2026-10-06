@@ -1,0 +1,14 @@
+node_modules/
+dist/
+*.log
+
+# Secrets - never commit real environment files
+.env
+backend/.env
+
+# Python backend (Sprint 2)
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+backend/.venv/
