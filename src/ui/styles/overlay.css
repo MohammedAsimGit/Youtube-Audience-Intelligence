@@ -1,0 +1,2368 @@
+@import "tailwindcss";
+
+/*
+ * This stylesheet is compiled at build time, imported as a STRING (`?inline`)
+ * and injected into the extension's Shadow DOM root. It can never reach
+ * YouTube's document, and YouTube's CSS can never reach in (Shadow DOM
+ * isolation). All classes are namespaced `sai-` as defense-in-depth; generic
+ * element selectors below are scoped to `.sai-root` for the same reason.
+ */
+
+.sai-root {
+  font-family: "Roboto", "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: #edebf7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The host element sits at pointer-events:none so YouTube stays clickable;
+   interactive extension surfaces re-enable pointer events here. */
+.sai-fab,
+.sai-glass {
+  pointer-events: auto;
+}
+
+/* ── Intelligence console panel ──────────────────────────────── *
+ * Deep graphite, opaque (no glassmorphism): the console must read as a
+ * solid instrument over YouTube, with an electric-violet frame and a
+ * magenta glow accent. */
+.sai-glass {
+  background:
+    radial-gradient(140% 90% at 100% 0%, rgba(124, 58, 237, 0.16), transparent 55%),
+    linear-gradient(165deg, #1a1626 0%, #131020 48%, #0e0b18 100%);
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.62),
+    0 0 0 1px rgba(232, 121, 249, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.sai-panel {
+  animation: sai-panel-in 260ms cubic-bezier(0.22, 0.8, 0.28, 1) both;
+}
+
+@keyframes sai-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── AI FAB (violet → magenta) ───────────────────────────────── */
+.sai-fab {
+  background: radial-gradient(
+    120% 120% at 30% 20%,
+    rgba(139, 92, 246, 0.96),
+    rgba(124, 58, 237, 0.94) 52%,
+    rgba(15, 11, 26, 0.97)
+  );
+  border: 1px solid rgba(216, 180, 254, 0.5);
+  color: #f5f3ff;
+  box-shadow:
+    0 10px 34px rgba(124, 58, 237, 0.45),
+    0 0 18px rgba(232, 121, 249, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  animation: sai-fab-in 420ms cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.sai-fab:hover {
+  transform: translateY(-1px) scale(1.04);
+  border-color: rgba(240, 171, 252, 0.8);
+  box-shadow:
+    0 14px 42px rgba(124, 58, 237, 0.6),
+    0 0 28px rgba(232, 121, 249, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.sai-fab:active {
+  transform: scale(0.96);
+}
+
+.sai-fab:focus-visible {
+  outline: 2px solid #9ec1ff;
+  outline-offset: 3px;
+}
+
+@keyframes sai-fab-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ── Focus visibility (keyboard users) ───────────────────────── */
+.sai-focus:focus-visible {
+  outline: 2px solid #d8b4fe;
+  outline-offset: 2px;
+}
+
+/* ── Status chip (HUD state pill) ────────────────────────────── */
+.sai-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  white-space: nowrap;
+}
+
+.sai-chip::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 6px currentColor;
+}
+
+.sai-chip[data-status='closed'] {
+  color: #a8a2c4;
+  border-color: rgba(168, 162, 196, 0.35);
+  background: rgba(168, 162, 196, 0.08);
+}
+
+.sai-chip[data-status='open'] {
+  color: #c4b5fd;
+  border-color: rgba(196, 181, 253, 0.4);
+  background: rgba(196, 181, 253, 0.1);
+}
+
+.sai-chip[data-status='ready'] {
+  color: #86efac;
+  border-color: rgba(134, 239, 172, 0.35);
+  background: rgba(134, 239, 172, 0.08);
+}
+
+.sai-chip[data-status='loading'] {
+  color: #93c5fd;
+  border-color: rgba(147, 197, 253, 0.35);
+  background: rgba(147, 197, 253, 0.08);
+}
+
+.sai-chip[data-status='analyzing'] {
+  color: #d8b4fe;
+  border-color: rgba(216, 180, 254, 0.4);
+  background: rgba(167, 139, 250, 0.12);
+}
+
+.sai-chip[data-status='complete'] {
+  color: #f0abfc;
+  border-color: rgba(240, 171, 252, 0.4);
+  background: rgba(240, 171, 252, 0.1);
+}
+
+.sai-chip[data-status='error'] {
+  color: #fca5a5;
+  border-color: rgba(252, 165, 165, 0.35);
+  background: rgba(252, 165, 165, 0.08);
+}
+
+/* ── Notice banner (aria-live messages) ──────────────────────── */
+.sai-notice {
+  padding: 8px 16px;
+  border-bottom: 1px solid rgba(167, 139, 250, 0.2);
+  background: rgba(124, 58, 237, 0.14);
+  color: #ddd6fe;
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+/* ── Console chrome: header / subtitle / footer ──────────────── */
+.sai-header {
+  background: linear-gradient(180deg, rgba(124, 58, 237, 0.12), transparent);
+  border-bottom-color: rgba(167, 139, 250, 0.24);
+}
+
+.sai-title-icon {
+  color: #e879f9;
+  filter: drop-shadow(0 0 6px rgba(232, 121, 249, 0.55));
+}
+
+.sai-subtitle {
+  color: #a99fd4;
+}
+
+.sai-footer {
+  border-top-color: rgba(167, 139, 250, 0.18);
+  color: #9d92c7;
+}
+
+/* ── HUD text primitives ─────────────────────────────────────── */
+.sai-hud {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #c4b5fd;
+}
+
+.sai-key {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #a49ad0;
+}
+
+.sai-value {
+  font-size: 12px;
+  color: #edebf7;
+}
+
+.sai-mono {
+  font-family: ui-monospace, "Cascadia Code", "Consolas", monospace;
+  font-size: 12px;
+  color: #c4b5fd;
+}
+
+.sai-inset {
+  background: rgba(124, 58, 237, 0.07);
+  border: 1px solid rgba(167, 139, 250, 0.16);
+}
+
+/* ── Primary action (violet → magenta) ───────────────────────── */
+.sai-btn {
+  padding: 9px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(216, 180, 254, 0.45);
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.97), rgba(162, 46, 190, 0.94));
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  transition:
+    box-shadow 180ms ease,
+    transform 180ms ease,
+    filter 180ms ease;
+}
+
+.sai-btn:hover:not(:disabled) {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 22px rgba(168, 85, 247, 0.45);
+}
+
+.sai-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.sai-btn:disabled {
+  opacity: 0.55;
+}
+
+.sai-btn:focus-visible {
+  outline: 2px solid #d8b4fe;
+  outline-offset: 2px;
+}
+
+/* ── Spinner (acquisition initializing) ──────────────────────── */
+.sai-spinner {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid rgba(196, 181, 253, 0.25);
+  border-top-color: #c4b5fd;
+  animation: sai-spin 0.8s linear infinite;
+}
+
+@keyframes sai-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Scrollbar (body region) ─────────────────────────────────── */
+.sai-body {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(167, 139, 250, 0.35) transparent;
+}
+
+.sai-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sai-body::-webkit-scrollbar-thumb {
+  background: rgba(167, 139, 250, 0.3);
+  border-radius: 8px;
+}
+
+.sai-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ── Sentiment intelligence (Sprint 4) ───────────────────────── */
+.sai-analysis-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #f0abfc;
+}
+
+.sai-state-badge {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 171, 252, 0.35);
+  background: rgba(240, 171, 252, 0.08);
+  color: #f0abfc;
+  white-space: nowrap;
+}
+
+/* ── Active-video ownership marker (Sprint 4.2, §53) ────────── */
+/* Deliberately quiet: a live dot + micro-label so the user knows the
+   displayed intelligence belongs to the currently selected video. */
+.sai-active-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #6ee7b7;
+  white-space: nowrap;
+}
+
+.sai-active-badge::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: #34d399;
+  box-shadow: 0 0 5px rgba(52, 211, 153, 0.6);
+}
+
+.sai-pulse-icon {
+  color: #e879f9;
+  animation: sai-pulse 1.4s ease-in-out infinite;
+}
+
+/* Processing pipeline (§25): staggered step emphasis instead of a spinner. */
+.sai-pipeline {
+  border: 1px solid rgba(167, 139, 250, 0.18);
+  background: rgba(124, 58, 237, 0.06);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.sai-steps {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 7px;
+}
+
+.sai-step {
+  position: relative;
+  padding-left: 18px;
+  font-size: 12px;
+  color: #cbc4ea;
+  opacity: 0.4;
+  animation: sai-step-glow 1.8s ease-in-out infinite;
+}
+
+.sai-step::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 5px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #a78bfa;
+  box-shadow: 0 0 8px rgba(167, 139, 250, 0.8);
+}
+
+.sai-step:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.sai-step:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+.sai-step:nth-child(4) {
+  animation-delay: 0.9s;
+}
+
+@keyframes sai-step-glow {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes sai-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 3px rgba(232, 121, 249, 0.6));
+  }
+  50% {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 9px rgba(232, 121, 249, 0.9));
+  }
+}
+
+/* Primary verdict display (§23). */
+.sai-dominant {
+  margin-top: 10px;
+  text-align: center;
+  padding: 16px 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  background:
+    radial-gradient(120% 120% at 50% 0%, rgba(124, 58, 237, 0.22), transparent 70%),
+    rgba(232, 121, 249, 0.05);
+}
+
+.sai-dominant-label {
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #faf7ff;
+  text-shadow: 0 0 26px rgba(232, 121, 249, 0.45);
+}
+
+.sai-dominant-pct {
+  margin-top: 2px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #f0abfc;
+}
+
+.sai-dominant-caption {
+  margin-top: 4px;
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #a99fd4;
+}
+
+/* Distribution bars (§23): label + bar + percent + count, never color-only. */
+.sai-bars {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.sai-bar-row {
+  display: grid;
+  grid-template-columns: 54px 1fr 36px 44px;
+  gap: 7px;
+  align-items: center;
+}
+
+.sai-bar-label {
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: #cbc4ea;
+}
+
+.sai-bar-track {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+
+.sai-bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  transition: width 420ms cubic-bezier(0.22, 0.8, 0.28, 1);
+}
+
+.sai-bar-fill[data-kind='positive'] {
+  background: linear-gradient(90deg, #8b5cf6, #c084fc);
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.55);
+}
+
+.sai-bar-fill[data-kind='neutral'] {
+  background: linear-gradient(90deg, #64748b, #a5b4fc);
+}
+
+.sai-bar-fill[data-kind='negative'] {
+  background: linear-gradient(90deg, #a21caf, #f0abfc);
+  box-shadow: 0 0 8px rgba(240, 171, 252, 0.45);
+}
+
+.sai-bar-pct {
+  font-size: 11px;
+  font-weight: 600;
+  text-align: right;
+  color: #f5f3ff;
+}
+
+.sai-bar-count {
+  font-size: 10.5px;
+  text-align: right;
+  color: #a99fd4;
+}
+
+/* Coverage card (§24). */
+.sai-count {
+  font-size: 15px;
+  font-weight: 600;
+  color: #edebf7;
+}
+
+.sai-count-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #faf7ff;
+  letter-spacing: 0.01em;
+}
+
+/* ── Reduced motion ──────────────────────────────────────────── */
+/* ==========================================================================
+   Sprint 5.2 - interactive sentiment intelligence UI
+   Cards + Audience Pulse hero + distribution bars + emotion/mood/intensity
+   visualizations + coverage counters + progressive disclosure + tooltips +
+   FAB intelligence states.
+
+   Motion rules (§16/§24/§29): ONE-SHOT entrance animations only (fill:
+   backwards, so hover/interaction styles take over afterwards), GPU-friendly
+   transforms/opacity, width keyframes driven by real inline values, no fake
+   progress anywhere. The reduced-motion block at the bottom neutralizes
+   every duration inside .sai-root.
+   ========================================================================== */
+
+/* ── Surface cards (§18: darker solid surfaces, clear boundaries) ─ */
+.sai-card {
+  position: relative;
+  padding: 14px 15px 15px;
+  border-radius: 16px;
+  border: 1px solid rgba(167, 139, 250, 0.18);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(124, 58, 237, 0.1),
+      rgba(124, 58, 237, 0.03) 45%,
+      rgba(15, 11, 26, 0.4)
+    ),
+    rgba(21, 17, 35, 0.76);
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  animation: sai-rise 420ms cubic-bezier(0.22, 0.8, 0.28, 1) backwards;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease;
+}
+
+.sai-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(196, 181, 253, 0.36);
+  box-shadow:
+    0 14px 32px rgba(0, 0, 0, 0.38),
+    0 0 0 1px rgba(232, 121, 249, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.sai-card:focus-within {
+  border-color: rgba(196, 181, 253, 0.4);
+}
+
+.sai-card-live {
+  border-color: rgba(232, 121, 249, 0.42);
+  background:
+    linear-gradient(180deg, rgba(232, 121, 249, 0.12), rgba(15, 11, 26, 0.4)),
+    rgba(21, 17, 35, 0.76);
+}
+
+.sai-card-secondary {
+  opacity: 0.94;
+}
+
+@keyframes sai-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.sai-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.sai-card-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #c4b5fd;
+}
+
+.sai-card-icon {
+  width: 13px;
+  height: 13px;
+  color: #e879f9;
+}
+
+.sai-card-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Audience Pulse hero (§6) ─────────────────────────────────── */
+.sai-hero {
+  border-color: rgba(196, 181, 253, 0.36);
+  background:
+    radial-gradient(130% 115% at 16% 0%, rgba(124, 58, 237, 0.3), transparent 62%),
+    radial-gradient(95% 95% at 100% 105%, rgba(232, 121, 249, 0.14), transparent 65%),
+    rgba(21, 17, 35, 0.84);
+}
+
+.sai-hero-grid {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.sai-hero-ring {
+  position: relative;
+  width: 112px;
+  height: 112px;
+  flex-shrink: 0;
+}
+
+.sai-hero-ring svg {
+  width: 100%;
+  height: 100%;
+}
+
+.sai-ring-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 9;
+}
+
+.sai-ring-fill {
+  fill: none;
+  stroke: url(#sai-ring-gradient);
+  stroke-width: 9;
+  stroke-linecap: round;
+  animation: sai-ring-pop 950ms cubic-bezier(0.22, 0.8, 0.28, 1) 260ms backwards;
+}
+
+.sai-ring-mini {
+  stroke: #8b5cf6;
+  stroke-width: 7;
+}
+
+@keyframes sai-ring-pop {
+  from {
+    stroke-dashoffset: var(--sai-ring-full, 400);
+  }
+  to {
+    stroke-dashoffset: var(--sai-ring-end, 0);
+  }
+}
+
+.sai-hero-pct {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 19px;
+  font-weight: 700;
+  color: #faf7ff;
+  text-shadow: 0 0 18px rgba(232, 121, 249, 0.55);
+}
+
+.sai-hero-eyebrow {
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #a99fd4;
+}
+
+.sai-hero-headline {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 3px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #faf7ff;
+}
+
+.sai-hero-face {
+  width: 17px;
+  height: 17px;
+  color: #f0abfc;
+}
+
+.sai-hero-responses {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #c7c0e8;
+}
+
+.sai-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: max-content;
+  margin-top: 9px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  background: rgba(52, 211, 153, 0.08);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #6ee7b7;
+}
+
+.sai-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 6px currentColor;
+  animation: sai-blink 2.2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes sai-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* ── Distribution bars (§7): icon + label + grow + hover ──────── */
+.sai-bar-row {
+  grid-template-columns: 66px 1fr 38px 46px;
+}
+
+.sai-bar-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sai-row-icon {
+  width: 12px;
+  height: 12px;
+  color: #a99fd4;
+  flex-shrink: 0;
+  transition:
+    transform 160ms ease,
+    color 160ms ease;
+}
+
+.sai-bar-row:hover .sai-row-icon {
+  transform: translateY(-1px) scale(1.12);
+  color: #e879f9;
+}
+
+.sai-bar-row:hover .sai-bar-count {
+  color: #ddd6fe;
+}
+
+/* One-shot growth from 0 → the real inline width (never endless). */
+.sai-bar-fill {
+  animation: sai-grow 700ms cubic-bezier(0.22, 0.8, 0.28, 1) backwards;
+}
+
+.sai-bars .sai-bar-row:nth-child(1) .sai-bar-fill {
+  animation-delay: 140ms;
+}
+
+.sai-bars .sai-bar-row:nth-child(2) .sai-bar-fill {
+  animation-delay: 230ms;
+}
+
+.sai-bars .sai-bar-row:nth-child(3) .sai-bar-fill {
+  animation-delay: 320ms;
+}
+
+@keyframes sai-grow {
+  from {
+    width: 0;
+  }
+}
+
+.sai-bar-row[data-dominant='true'] .sai-bar-label {
+  color: #f5f3ff;
+  font-weight: 600;
+}
+
+.sai-bar-row[data-dominant='true'] .sai-bar-fill {
+  box-shadow: 0 0 10px rgba(232, 121, 249, 0.5);
+}
+
+/* ── Emotion card (§8) ────────────────────────────────────────── */
+.sai-emotion-body {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 9px;
+}
+
+.sai-emotion-label {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #e9d5ff;
+  text-shadow: 0 0 24px rgba(167, 139, 250, 0.5);
+}
+
+.sai-emotion-pct {
+  font-size: 15px;
+  font-weight: 600;
+  color: #f0abfc;
+}
+
+.sai-icon-emotion {
+  color: #e879f9;
+}
+
+.sai-icon-mood {
+  color: #f0abfc;
+}
+
+.sai-icon-energy {
+  color: #fbbf24;
+}
+
+/* ── Mood signal (§9) ─────────────────────────────────────────── */
+.sai-mood-body {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 9px;
+}
+
+.sai-mood-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.8);
+  animation: sai-pulse 1.6s ease-in-out 3;
+}
+
+.sai-mood-value {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #d1fae5;
+}
+
+.sai-mood-body[data-mood='CALM'] .sai-mood-dot,
+.sai-mood-body[data-mood='CALM'] .sai-mood-value {
+  color: #93c5fd;
+}
+
+.sai-mood-body[data-mood='CALM'] .sai-mood-dot {
+  background: #60a5fa;
+  box-shadow: 0 0 8px rgba(96, 165, 250, 0.8);
+}
+
+.sai-mood-body[data-mood='EXCITED'] .sai-mood-dot {
+  background: #e879f9;
+  box-shadow: 0 0 8px rgba(232, 121, 249, 0.8);
+}
+
+.sai-mood-body[data-mood='EXCITED'] .sai-mood-value {
+  color: #fbcfe8;
+}
+
+.sai-mood-body[data-mood='MIXED'] .sai-mood-dot {
+  background: #fbbf24;
+  box-shadow: 0 0 8px rgba(251, 191, 36, 0.8);
+}
+
+.sai-mood-body[data-mood='MIXED'] .sai-mood-value {
+  color: #fde68a;
+}
+
+.sai-mood-body[data-mood='CONCERNED'] .sai-mood-dot {
+  background: #fb923c;
+  box-shadow: 0 0 8px rgba(251, 146, 60, 0.8);
+}
+
+.sai-mood-body[data-mood='CONCERNED'] .sai-mood-value {
+  color: #fed7aa;
+}
+
+.sai-mood-body[data-mood='NEGATIVE'] .sai-mood-dot {
+  background: #f87171;
+  box-shadow: 0 0 8px rgba(248, 113, 113, 0.8);
+}
+
+.sai-mood-body[data-mood='NEGATIVE'] .sai-mood-value {
+  color: #fecaca;
+}
+
+.sai-mood-copy {
+  margin-top: 7px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: #c7c0e8;
+}
+
+/* ── Emotional energy spectrum (§10) ──────────────────────────── */
+.sai-seg-track {
+  display: flex;
+  gap: 3px;
+  height: 10px;
+  margin-top: 11px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.sai-seg {
+  display: block;
+  height: 100%;
+  animation: sai-grow 640ms cubic-bezier(0.22, 0.8, 0.28, 1) backwards;
+}
+
+.sai-seg-low {
+  background: linear-gradient(90deg, #64748b, #94a3b8);
+}
+
+.sai-seg-medium {
+  background: linear-gradient(90deg, #8b5cf6, #c084fc);
+}
+
+.sai-seg-high {
+  background: linear-gradient(90deg, #a21caf, #f0abfc);
+}
+
+/* ── Analysis quality (§11: secondary, small) ─────────────────── */
+.sai-confidence-body {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 9px;
+}
+
+.sai-mini-ring {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+}
+
+.sai-mini-ring svg {
+  width: 100%;
+  height: 100%;
+}
+
+.sai-mini-pct {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #f5f3ff;
+}
+
+.sai-confidence-copy {
+  font-size: 12px;
+  color: #ddd6fe;
+}
+
+/* ── Coverage counters (§12) ──────────────────────────────────── */
+.sai-cov {
+  list-style: none;
+  margin: 11px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.sai-cov-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  padding: 9px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(167, 139, 250, 0.16);
+  background: rgba(124, 58, 237, 0.08);
+  transition:
+    transform 150ms ease,
+    border-color 150ms ease;
+}
+
+.sai-cov-item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(196, 181, 253, 0.4);
+}
+
+.sai-cov-icon {
+  width: 14px;
+  height: 14px;
+  color: #a78bfa;
+}
+
+.sai-icon-collect {
+  color: #f0abfc;
+}
+
+.sai-icon-analyzed {
+  color: #a78bfa;
+}
+
+.sai-icon-failed {
+  color: #fca5a5;
+}
+
+.sai-cov-num {
+  font-size: 16px;
+  font-weight: 700;
+  color: #faf7ff;
+  letter-spacing: 0.01em;
+}
+
+.sai-cov-label {
+  font-size: 9.5px;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+  color: #a99fd4;
+}
+
+/* Skipped = visually secondary (§12), still fully legible. */
+.sai-cov-secondary {
+  opacity: 0.72;
+}
+
+.sai-cov-secondary:hover {
+  opacity: 1;
+}
+
+.sai-fineprint {
+  margin-top: 9px;
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: #a49ad0;
+}
+
+/* ── Progressive disclosure (§13) ─────────────────────────────── */
+.sai-disclosure {
+  margin-top: 11px;
+  border-radius: 12px;
+  border: 1px solid rgba(167, 139, 250, 0.18);
+  background: rgba(124, 58, 237, 0.06);
+  overflow: hidden;
+}
+
+.sai-disclosure-btn {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 11px;
+  border: 0;
+  background: transparent;
+  color: #ddd6fe;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-align: left;
+  cursor: pointer;
+  transition: background 140ms ease;
+}
+
+.sai-disclosure-btn:hover {
+  background: rgba(124, 58, 237, 0.14);
+}
+
+.sai-disclosure-chevron {
+  width: 12px;
+  height: 12px;
+  color: #a78bfa;
+  transition: transform 180ms ease;
+}
+
+.sai-disclosure-chevron-open {
+  transform: rotate(180deg);
+}
+
+.sai-disclosure-hint {
+  margin-left: auto;
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: #a99fd4;
+}
+
+.sai-disclosure-panel {
+  padding: 2px 12px 11px;
+  animation: sai-reveal 220ms ease backwards;
+}
+
+@keyframes sai-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.sai-disclosure-copy {
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: #c7c0e8;
+}
+
+/* ── Tooltips (§20): hover AND keyboard focus ─────────────────── */
+.sai-tip {
+  position: relative;
+  display: inline-flex;
+}
+
+.sai-tip-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(167, 139, 250, 0.3);
+  background: rgba(124, 58, 237, 0.12);
+  color: #c4b5fd;
+  cursor: help;
+  transition:
+    background 140ms ease,
+    color 140ms ease;
+}
+
+.sai-tip-btn:hover {
+  background: rgba(124, 58, 237, 0.32);
+  color: #f5f3ff;
+}
+
+.sai-tip-icon {
+  width: 11px;
+  height: 11px;
+}
+
+.sai-tip-bubble {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 7px);
+  z-index: 40;
+  width: max-content;
+  max-width: 210px;
+  padding: 7px 9px;
+  border-radius: 9px;
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  background: #191430;
+  color: #ddd6fe;
+  font-size: 10.5px;
+  line-height: 1.5;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-3px);
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease,
+    visibility 150ms;
+  pointer-events: none;
+}
+
+.sai-tip:hover .sai-tip-bubble,
+.sai-tip:focus-within .sai-tip-bubble {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+/* ── Technical details (§13) ──────────────────────────────────── */
+.sai-tech {
+  margin: 8px 0 0;
+  display: grid;
+  gap: 7px;
+}
+
+.sai-tech-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sai-tech-row dt {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #a49ad0;
+}
+
+.sai-tech-row dd {
+  margin: 0;
+  font-size: 11.5px;
+  color: #ddd6fe;
+  text-align: right;
+}
+
+/* ── Current video card (§5) ──────────────────────────────────── */
+.sai-video-card {
+  border-radius: 14px;
+  border: 1px solid rgba(167, 139, 250, 0.16);
+  background: rgba(124, 58, 237, 0.07);
+  padding: 10px 12px;
+}
+
+.sai-video-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 9px;
+  border: 1px solid rgba(232, 121, 249, 0.35);
+  background: linear-gradient(135deg, rgba(232, 121, 249, 0.22), rgba(124, 58, 237, 0.28));
+  color: #f0abfc;
+  flex-shrink: 0;
+}
+
+.sai-video-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+/* ── Animated analysis experience (§15) ───────────────────────── */
+.sai-friendly {
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #e9d5ff;
+}
+
+.sai-scan {
+  position: relative;
+  overflow: hidden;
+}
+
+.sai-scan::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 45%;
+  background: linear-gradient(180deg, rgba(232, 121, 249, 0.12), transparent);
+  transform: translateY(-110%);
+  animation: sai-scan-sweep 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes sai-scan-sweep {
+  0% {
+    transform: translateY(-110%);
+  }
+  55%,
+  100% {
+    transform: translateY(270%);
+  }
+}
+
+/* ── FAB intelligence states (§23) ────────────────────────────── */
+.sai-fab::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  pointer-events: none;
+}
+
+.sai-fab[data-state='acquiring']::after {
+  border-color: rgba(196, 181, 253, 0.5);
+  animation: sai-halo 2s ease-out infinite;
+}
+
+.sai-fab[data-state='analyzing']::after {
+  border-color: rgba(232, 121, 249, 0.65);
+  animation: sai-halo 1.3s ease-out infinite;
+}
+
+.sai-fab[data-state='complete'] {
+  border-color: rgba(52, 211, 153, 0.75);
+  box-shadow:
+    0 10px 34px rgba(16, 185, 129, 0.4),
+    0 0 18px rgba(52, 211, 153, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.sai-fab[data-state='complete']::after {
+  border-color: rgba(52, 211, 153, 0.5);
+}
+
+.sai-fab[data-state='error'] {
+  border-color: rgba(251, 146, 60, 0.85);
+  box-shadow:
+    0 10px 34px rgba(251, 146, 60, 0.35),
+    0 0 16px rgba(251, 146, 60, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+@keyframes sai-halo {
+  0% {
+    transform: scale(0.96);
+    opacity: 0.9;
+  }
+  70%,
+  100% {
+    transform: scale(1.18);
+    opacity: 0;
+  }
+}
+
+/* ── Responsive overlay (§21) ─────────────────────────────────── */
+@media (max-width: 1439px) {
+  .sai-cov {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1366px) {
+  .sai-hero-grid {
+    gap: 12px;
+  }
+
+  .sai-hero-ring {
+    width: 96px;
+    height: 96px;
+  }
+
+  .sai-hero-pct {
+    font-size: 17px;
+  }
+
+  .sai-emotion-label {
+    font-size: 22px;
+  }
+}
+
+/* ── Sprint 6: topic / discussion intelligence (§30-§35) ────── */
+.sai-card-topics {
+  --topic-discussed: #c084fc;
+  --topic-loved: #6ee7b7;
+  --topic-pain: #fcd34d;
+  --topic-mixed: #94a3b8;
+}
+
+.sai-topic-heading {
+  display: grid;
+  gap: 3px;
+  margin-bottom: 4px;
+}
+
+.sai-topic-heading .sai-hud {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.sai-topic-heading-icon {
+  color: var(--topic-discussed);
+}
+
+.sai-topic-subtitle {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: #9f96d4;
+}
+
+.sai-topic-group {
+  margin-top: 14px;
+}
+
+.sai-topic-group-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 8px;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ddd6fe;
+}
+
+.sai-topic-group[data-kind='discussed'] .sai-topic-group-icon {
+  color: var(--topic-discussed);
+}
+
+.sai-topic-group[data-kind='loved'] .sai-topic-group-icon {
+  color: var(--topic-loved);
+}
+
+.sai-topic-group[data-kind='pain'] .sai-topic-group-icon {
+  color: var(--topic-pain);
+}
+
+.sai-topic-group[data-kind='mixed'] .sai-topic-group-icon {
+  color: var(--topic-mixed);
+}
+
+.sai-topic-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.sai-topic {
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-left-width: 2px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 8px 10px 9px;
+  animation: sai-rise 380ms cubic-bezier(0.22, 0.8, 0.28, 1) backwards;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.sai-topic[data-kind='discussed'] {
+  border-left-color: rgba(192, 132, 252, 0.6);
+}
+
+.sai-topic[data-kind='loved'] {
+  border-left-color: rgba(110, 231, 183, 0.55);
+}
+
+.sai-topic[data-kind='pain'] {
+  border-left-color: rgba(252, 211, 77, 0.55);
+}
+
+.sai-topic[data-kind='mixed'] {
+  border-left-color: rgba(148, 163, 184, 0.55);
+}
+
+.sai-topic[data-expanded='true'] {
+  border-color: rgba(196, 181, 253, 0.4);
+  background: rgba(124, 58, 237, 0.09);
+}
+
+.sai-topic-head {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+  align-items: center;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+}
+
+.sai-topic-head:focus-visible {
+  outline: 2px solid rgba(196, 181, 253, 0.6);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.sai-topic-rank {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: #ddd6fe;
+  background: rgba(124, 58, 237, 0.2);
+  border: 1px solid rgba(196, 181, 253, 0.25);
+  border-radius: 6px;
+  padding: 2px 5px;
+}
+
+.sai-topic-label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #f5f3ff;
+  line-height: 1.3;
+}
+
+.sai-topic-meta {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  color: #a9a2cd;
+}
+
+.sai-topic-chev {
+  color: #9f96d4;
+  transition: transform 180ms ease;
+}
+
+.sai-topic-chev-open {
+  transform: rotate(180deg);
+}
+
+.sai-topic-track {
+  display: block;
+  height: 5px;
+  margin-top: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.sai-topic-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  animation: sai-grow 700ms cubic-bezier(0.22, 0.8, 0.28, 1) backwards;
+  transition: width 420ms cubic-bezier(0.22, 0.8, 0.28, 1);
+}
+
+.sai-topic-fill[data-kind='discussed'] {
+  background: linear-gradient(90deg, #7c3aed, #c084fc);
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+}
+
+.sai-topic-fill[data-kind='loved'] {
+  background: linear-gradient(90deg, #059669, #6ee7b7);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.45);
+}
+
+.sai-topic-fill[data-kind='pain'] {
+  background: linear-gradient(90deg, #d97706, #fcd34d);
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+}
+
+/* Mixed topics: the real sentiment split as a stacked bar (§15). */
+.sai-topic-mixbar {
+  display: flex;
+  height: 5px;
+  margin-top: 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.sai-topic-mixbar > span {
+  display: block;
+  height: 100%;
+  animation: sai-grow 700ms cubic-bezier(0.22, 0.8, 0.28, 1) backwards;
+}
+
+.sai-topic-mixbar > span[data-kind='positive'] {
+  background: linear-gradient(90deg, #8b5cf6, #c084fc);
+}
+
+.sai-topic-mixbar > span[data-kind='neutral'] {
+  background: #64748b;
+}
+
+.sai-topic-mixbar > span[data-kind='negative'] {
+  background: linear-gradient(90deg, #a21caf, #f0abfc);
+}
+
+.sai-topic-detail {
+  display: grid;
+  gap: 8px;
+  margin-top: 9px;
+  padding-top: 9px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.12);
+  animation: sai-reveal 220ms ease backwards;
+}
+
+.sai-topic-share {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  color: #a9a2cd;
+}
+
+.sai-topic-ideas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin: 0;
+}
+
+.sai-topic-ideas-key {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9f96d4;
+}
+
+.sai-topic-chip {
+  font-size: 10.5px;
+  color: #ddd6fe;
+  background: rgba(124, 58, 237, 0.16);
+  border: 1px solid rgba(196, 181, 253, 0.3);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.sai-topic-facts {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+}
+
+.sai-topic-fact {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11px;
+}
+
+.sai-topic-fact dt {
+  color: #9f96d4;
+}
+
+.sai-topic-fact dd {
+  margin: 0;
+  font-weight: 600;
+  color: #f5f3ff;
+  text-align: right;
+}
+
+.sai-topic-evidence {
+  margin: 0;
+  font-size: 11px;
+  font-style: italic;
+  color: #a9a2cd;
+  line-height: 1.45;
+}
+
+/* Loading / error / empty states (§36/§38/§39). */
+.sai-topic-state {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  text-align: center;
+  border: 1px dashed rgba(196, 181, 253, 0.28);
+  border-radius: 14px;
+  background: rgba(21, 17, 35, 0.5);
+  padding: 14px 12px;
+  animation: sai-rise 380ms cubic-bezier(0.22, 0.8, 0.28, 1) backwards;
+}
+
+.sai-topic-state .sai-analysis-state {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+@media (max-width: 1366px) {
+  .sai-topic {
+    padding: 7px 9px 8px;
+  }
+
+  .sai-topic-label {
+    font-size: 12px;
+  }
+}
+
+/* ── Reduced motion ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .sai-root *,
+  .sai-root *::before,
+  .sai-root *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Sprint 7: AI Audience Insight (§18-§21, §33-§34) ────────── */
+.sai-card-insight {
+  --insight-accent: #e879f9;
+  --insight-good: #6ee7b7;
+  --insight-warn: #fcd34d;
+  --insight-mix: #93c5fd;
+}
+
+.sai-insight-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.sai-insight-head .sai-hud {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.sai-insight-head-icon {
+  color: var(--insight-accent);
+}
+
+/* §23: honest source badge - only a real LLM run may say AI-generated. */
+.sai-insight-badge {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  background: rgba(148, 163, 184, 0.12);
+  color: #cbd5e1;
+  white-space: nowrap;
+}
+
+.sai-insight-badge[data-source='llm'] {
+  border-color: rgba(110, 231, 183, 0.45);
+  background: rgba(110, 231, 183, 0.12);
+  color: #6ee7b7;
+}
+
+.sai-insight-headline {
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1.3;
+  color: #f5f3ff;
+}
+
+.sai-insight-summary {
+  margin-top: 6px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+.sai-insight-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.sai-insight-source-hint {
+  margin-top: 3px;
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: #64748b;
+}
+
+.sai-insight-why {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c4b5fd;
+  border: 1px solid rgba(196, 181, 253, 0.35);
+  border-radius: 999px;
+  padding: 3px 9px;
+  background: rgba(196, 181, 253, 0.08);
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+
+.sai-insight-why:hover:not(:disabled) {
+  background: rgba(196, 181, 253, 0.18);
+  border-color: rgba(196, 181, 253, 0.6);
+}
+
+.sai-insight-why:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.sai-insight-why:focus-visible {
+  outline: 2px solid #a78bfa;
+  outline-offset: 2px;
+}
+
+/* §34: compact evidence chain - signals visibly connect, no big graph. */
+.sai-insight-ev-list {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+  padding-left: 14px;
+  position: relative;
+}
+
+.sai-insight-ev-list::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    rgba(232, 121, 249, 0.0),
+    rgba(232, 121, 249, 0.5) 12%,
+    rgba(196, 181, 253, 0.5) 88%,
+    rgba(232, 121, 249, 0.0)
+  );
+}
+
+.sai-insight-ev-list li {
+  position: relative;
+}
+
+.sai-insight-ev-list li::before {
+  content: '';
+  position: absolute;
+  left: -13.5px;
+  top: 7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #e879f9;
+  box-shadow: 0 0 6px rgba(232, 121, 249, 0.7);
+}
+
+.sai-insight-ev {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  width: 100%;
+  text-align: left;
+  font-size: 11.5px;
+  padding: 5px 8px;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+button.sai-insight-ev-click {
+  cursor: pointer;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+
+button.sai-insight-ev-click:hover {
+  border-color: rgba(232, 121, 249, 0.5);
+  background: rgba(232, 121, 249, 0.08);
+}
+
+button.sai-insight-ev-click:focus-visible {
+  outline: 2px solid #a78bfa;
+  outline-offset: 1px;
+}
+
+.sai-insight-ev-label {
+  color: #e2e8f0;
+  font-weight: 550;
+}
+
+.sai-insight-ev-value {
+  color: #f0abfc;
+  font-variant-numeric: tabular-nums;
+}
+
+.sai-insight-ev-detail {
+  color: #94a3b8;
+  font-size: 10.5px;
+}
+
+.sai-insight-ev-link {
+  margin-left: auto;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #c4b5fd;
+}
+
+/* §19 expandable supporting cards with per-category accents. */
+.sai-insight-card {
+  margin-top: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-left: 2px solid var(--insight-accent);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 8px 10px 9px;
+  animation: sai-rise 380ms cubic-bezier(0.22, 0.8, 0.28, 1) backwards;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.sai-insight-card:hover {
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.sai-insight-card[data-category='WHAT_WORKED'] {
+  border-left-color: var(--insight-good);
+}
+
+.sai-insight-card[data-category='MAIN_DISCUSSION'] {
+  border-left-color: #f0abfc;
+}
+
+.sai-insight-card[data-category='PAIN_POINT'] {
+  border-left-color: var(--insight-warn);
+}
+
+.sai-insight-card[data-category='EMOTIONAL_SIGNAL'] {
+  border-left-color: #a78bfa;
+}
+
+.sai-insight-card[data-category='TAKEAWAY'] {
+  border-left-color: var(--insight-mix);
+}
+
+.sai-insight-card-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.sai-insight-card-icon {
+  color: #e879f9;
+  flex: none;
+}
+
+.sai-insight-card[data-category='WHAT_WORKED'] .sai-insight-card-icon {
+  color: var(--insight-good);
+}
+
+.sai-insight-card[data-category='PAIN_POINT'] .sai-insight-card-icon {
+  color: var(--insight-warn);
+}
+
+.sai-insight-card[data-category='MAIN_DISCUSSION'] .sai-insight-card-icon {
+  color: #f0abfc;
+}
+
+.sai-insight-card[data-category='EMOTIONAL_SIGNAL'] .sai-insight-card-icon {
+  color: #a78bfa;
+}
+
+.sai-insight-card[data-category='TAKEAWAY'] .sai-insight-card-icon {
+  color: var(--insight-mix);
+}
+
+.sai-insight-card-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #f5f3ff;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sai-insight-card .sai-insight-why {
+  margin-left: auto;
+}
+
+.sai-insight-card-body {
+  margin-top: 5px;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: #cbd5e1;
+}
+
+/* §21 insight -> data linking: the targeted topic row glows briefly. */
+.sai-topic[data-highlight='true'] {
+  border-color: rgba(232, 121, 249, 0.75);
+  background: rgba(232, 121, 249, 0.1);
+  box-shadow: 0 0 0 1px rgba(232, 121, 249, 0.45),
+    0 0 14px rgba(232, 121, 249, 0.28);
+}
+
+/* ── Sprint 8: realtime audience monitor strip (§16/§19) ─────── */
+/* Sits under the analysis it describes: glass panel, LIVE pill with the
+   shared blink dot, exact backend numbers. Motion is entrance-only and
+   inherits the global .sai-root reduced-motion damping above. */
+.sai-realtime {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 9px 12px;
+  border: 1px solid rgba(139, 92, 246, 0.28);
+  border-radius: 14px;
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.1),
+    rgba(20, 16, 38, 0.45)
+  );
+  animation: sai-rise 380ms cubic-bezier(0.22, 0.8, 0.28, 1) backwards;
+}
+
+.sai-realtime-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sai-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(169, 162, 200, 0.3);
+  background: rgba(169, 162, 200, 0.08);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #a9a2c8; /* honest non-live default (STANDBY / OFF) */
+  white-space: nowrap;
+}
+
+.sai-live-pill.is-live {
+  border-color: rgba(52, 211, 153, 0.35);
+  background: rgba(52, 211, 153, 0.1);
+  color: #6ee7b7;
+}
+
+/* Non-live: the dot stays but stops blinking - no false liveness. */
+.sai-live-pill:not(.is-live) .sai-live-dot {
+  animation: none;
+  opacity: 0.55;
+}
+
+.sai-realtime-new {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 171, 252, 0.35);
+  background: rgba(240, 171, 252, 0.08);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #f0abfc;
+  animation: sai-rise 320ms cubic-bezier(0.22, 0.8, 0.28, 1) backwards;
+}
+
+.sai-realtime-trend {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #c4b5fd;
+  white-space: nowrap;
+}
+
+/* Direction color is decorative only: the ▲/▼/— glyph and the text label
+   carry the meaning (§21 never color-only). */
+.sai-realtime-trend.is-rising {
+  color: #6ee7b7;
+}
+
+.sai-realtime-trend.is-falling {
+  color: #fca5a5;
+}
+
+.sai-realtime-trend.is-stable {
+  color: #a9a2c8;
+}
+
+.sai-realtime-delta {
+  font-size: 9.5px;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+}
+
+.sai-realtime-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: #9f98c0;
+}
+
+.sai-realtime-activity {
+  font-weight: 600;
+  color: #c4b5fd;
+}
+
+.sai-realtime-muted {
+  color: inherit;
+  opacity: 0.72;
+  font-weight: 400;
+}
+
+.sai-realtime-pending {
+  font-size: 10.5px;
+  line-height: 1.45;
+  color: #c4b5fd;
+  opacity: 0.9;
+}
+
+/* ════════════════════════════════════════════════════════════
+ * Multi-section intelligence console (redesign)
+ * Persistent compact nav · section switching · overview glance cards.
+ * All motion here is one-shot CSS; the global prefers-reduced-motion
+ * rule neutralizes durations for every rule in this block.
+ * ════════════════════════════════════════════════════════════ */
+
+/* ── Sticky section nav (directly beneath the header) ──────── */
+.sai-nav {
+  position: sticky;
+  /* Sticky offsets apply to the MARGIN box: with the -16px top margin the
+     bar must stick at -16px so its border box lands flush with the body's
+     top edge (otherwise a 16px strip of scrolled content shows above it). */
+  top: -16px;
+  z-index: 6;
+  /* Span the body's px-4/py-4 padding so the bar reaches both edges. */
+  margin: -16px -16px 0;
+  padding: 7px 10px 0;
+  background: linear-gradient(
+    180deg,
+    rgba(19, 16, 32, 0.98),
+    rgba(19, 16, 32, 0.94)
+  );
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(148, 163, 255, 0.14);
+}
+
+.sai-nav-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  /* Never wraps: the strip scrolls horizontally instead (touch safe). */
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sai-nav-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.sai-nav-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: 0 0 auto; /* never shrink → the bar can't wrap */
+  padding: 7px 9px 9px;
+  border: 0;
+  background: transparent;
+  color: #8f89b5;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    background 160ms ease;
+}
+
+.sai-nav-tab:hover {
+  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sai-nav-tab.is-active {
+  color: #f5efff;
+  background: rgba(168, 85, 247, 0.1);
+}
+
+.sai-nav-icon {
+  width: 13px;
+  height: 13px;
+}
+
+.sai-nav-label {
+  line-height: 1;
+}
+
+/* Active indicator: subtle violet→magenta line + soft glow (not color-only:
+   the active tab also carries aria-current and the brighter label). */
+.sai-nav-indicator {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #a78bfa, #e879f9);
+  box-shadow: 0 0 8px rgba(232, 121, 249, 0.75);
+  opacity: 0;
+  transform: scaleX(0.4);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.sai-nav-tab.is-active .sai-nav-indicator {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Sections: inactive hidden, micro-motion on switch ─────── */
+.sai-section {
+  display: none;
+}
+
+.sai-section-active {
+  display: block;
+  /* Subtle fade + horizontal shift (~190ms) - no page flips, no parallax. */
+  animation: sai-section-in 190ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes sai-section-in {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ── Overview quick cards (MOOD / EMOTION / ENERGY) ────────── */
+.sai-quick-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.sai-quick {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 9px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 255, 0.16);
+  background: rgba(255, 255, 255, 0.035);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+.sai-quick:hover {
+  border-color: rgba(168, 85, 247, 0.45);
+  background: rgba(168, 85, 247, 0.08);
+  transform: translateY(-1px);
+}
+
+.sai-quick-eyebrow {
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #9f98c0;
+}
+
+.sai-quick-value {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #f5efff;
+}
+
+.sai-quick-sub {
+  font-size: 10px;
+  color: #c4b5fd;
+}
+
+/* ── Section placeholder + cross-section jump affordance ───── */
+.sai-section-pending {
+  padding: 16px 14px;
+  border-radius: 12px;
+  border: 1px dashed rgba(148, 163, 255, 0.2);
+  background: rgba(255, 255, 255, 0.02);
+  text-align: center;
+}
+
+.sai-section-jump {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px dashed rgba(148, 163, 255, 0.25);
+  background: transparent;
+  color: #a9a2c8;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.sai-section-jump:hover {
+  color: #e2e8f0;
+  border-color: rgba(168, 85, 247, 0.5);
+  background: rgba(168, 85, 247, 0.06);
+}
+
+/* ── AUDIENCE MOVEMENT trend card (sentiment section) ──────── */
+.sai-card-movement {
+  border-left: 2px solid rgba(232, 121, 249, 0.4);
+}
+
+/* ── Technical details: secondary control, never a nav item ── */
+.sai-tech-control {
+  border-top: 1px dashed rgba(148, 163, 255, 0.14);
+  padding-top: 4px;
+}
+
+.sai-tech-control .sai-disclosure-btn {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #8f89b5;
+}

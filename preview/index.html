@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sprint 5.2 UI preview (visual QA harness)</title>
+    <style>
+      /* Fake YouTube backdrop (dark, realistic contrast check - §18). */
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; background: #0f0f0f; color: #f1f1f1;
+        font-family: Roboto, 'Segoe UI', Arial, sans-serif; }
+      .yt { display: grid; grid-template-columns: 72px minmax(0, 1fr) 400px;
+        min-height: 100%; height: 2400px; align-items: start; }
+      .yt-rail { background: #0f0f0f; border-right: 1px solid #272727;
+        position: sticky; top: 0; height: 100vh; }
+      .yt-main { padding: 24px 24px 60px; }
+      .yt-player { aspect-ratio: 16 / 9; max-width: 960px; border-radius: 12px;
+        background: linear-gradient(135deg, #1f2333, #2a1f3d 60%, #3d1f35);
+        display: flex; align-items: center; justify-content: center;
+        color: #8f8f9a; font-size: 14px; letter-spacing: 0.2em; }
+      .yt-title { margin: 16px 0 6px; font-size: 19px; font-weight: 600; }
+      .yt-meta { color: #aaa; font-size: 13px; display: flex; gap: 14px; }
+      .yt-chan { margin-top: 14px; display: flex; align-items: center; gap: 10px; }
+      .yt-avatar { width: 36px; height: 36px; border-radius: 50%;
+        background: linear-gradient(135deg, #f97316, #db2777); }
+      .yt-comments { max-width: 960px; margin-top: 26px; border-top: 1px solid #303030;
+        padding-top: 18px; color: #aaa; font-size: 13px; }
+      .yt-comments p { line-height: 1.7; }
+      .yt-side { border-left: 1px solid #272727; padding: 16px; }
+      .yt-side .row { height: 92px; border-radius: 8px; margin-bottom: 12px;
+        background: #1c1c22; display: flex; gap: 10px; }
+      .yt-side .thumb { width: 150px; border-radius: 8px; background: #2a2a33; }
+      .yt-side .lines { flex: 1; padding: 8px 0; }
+      .yt-side .lines i { display: block; height: 10px; border-radius: 4px;
+        background: #2f2f38; margin: 6px 8px; }
+      .yt-side .lines i:first-child { width: 85%; }
+      .yt-side .lines i:last-child { width: 55%; }
+    </style>
+  </head>
+  <body>
+    <div class="yt" aria-hidden="true">
+      <div class="yt-rail"></div>
+      <div class="yt-main">
+        <div class="yt-player">VIDEO PLAYER</div>
+        <div class="yt-title">React JS roadmap | chai aur react series</div>
+        <div class="yt-meta"><span>214,338 views</span><span>9,812 likes</span><span>May 14, 2024</span></div>
+        <div class="yt-chan">
+          <div class="yt-avatar"></div>
+          <div>
+            <div style="font-weight:600">Chai aur Code</div>
+            <div style="color:#888;font-size:12px">482K subscribers</div>
+          </div>
+        </div>
+        <div class="yt-comments">
+          <div style="color:#f1f1f1;font-size:14px;font-weight:600;margin-bottom:10px">Comments&nbsp;&nbsp;2,429</div>
+          <p>bro this roadmap finally made hooks click for me 🔥</p>
+          <p>chapter 4 timestamp saved me hours</p>
+          <p>please make a typescript one next!</p>
+        </div>
+      </div>
+      <div class="yt-side">
+        <div class="row"><div class="thumb"></div><div class="lines"><i></i><i></i></div></div>
+        <div class="row"><div class="thumb"></div><div class="lines"><i></i><i></i></div></div>
+        <div class="row"><div class="thumb"></div><div class="lines"><i></i><i></i></div></div>
+        <div class="row"><div class="thumb"></div><div class="lines"><i></i><i></i></div></div>
+      </div>
+    </div>
+    <script type="module" src="/preview/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "AI Analyzer - Sentiment Intelligence Layer",
+  "version": "0.5.0",
+  "description": "AI intelligence overlay for YouTube. Sprint 4.4: zero-click analysis with automatic local backend startup (native messaging).",
+  "permissions": [
+    "nativeMessaging"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1/*",
+    "http://localhost/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*", "https://youtube.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ]
+}
